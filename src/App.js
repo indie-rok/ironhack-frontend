@@ -1,28 +1,31 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
+import React from "react";
+import { Nav } from "react-bootstrap";
+import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
+
 import "./App.css";
 
 import countries from "./data/countries";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import CountryDetail from "./components/CountryDetail";
 
 function App() {
+  const countriesMenu = countries.map(country => (
+    <CountryDetail key={country.ccn3} {...country} />
+  ));
+
+  console.log(countries);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Nav defaultActiveKey="/home" className="flex-column">
+            {countriesMenu}
+          </Nav>
+          <Route></Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
