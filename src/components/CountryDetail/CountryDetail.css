@@ -1,0 +1,5 @@
+.country-detail {
+  position: fixed;
+  right: 0;
+  flex: 1;
+}

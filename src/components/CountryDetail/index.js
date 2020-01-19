@@ -1,11 +1,61 @@
 import React from "react";
-import { Nav } from "react-bootstrap";
+import { Card, Container, Row, Col, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export default function CountryDetail({ name, flag, cca3 }) {
+import countries from "../../data/countries";
+
+import "./CountryDetail.css";
+
+const getCountry = cca3 => countries.find(country => country.cca3 === cca3);
+
+export default function CountryDetail({ match }) {
+  const country = getCountry(match.params.country);
+
+  const capitals = country.capital.map((capital, index) => (
+    <span key={`capital-${index}`}>{capital}</span>
+  ));
+
+  const borders = country.borders.map(countryBorderCca3 => {
+    const countryBorder = getCountry(countryBorderCca3);
+    return (
+      <ListGroup.Item>
+        <Link to={`/${countryBorderCca3}`}>{countryBorder.name.official}</Link>
+      </ListGroup.Item>
+    );
+  });
+
   return (
-    <Link to={cca3}>
-      <span>{flag}</span> <span>{name.official}</span>
-    </Link>
+    <Container className="country-detail">
+      <Card>
+        <Card.Header>
+          <h2>{country.name.official}</h2>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col>Capital</Col>
+            <Col>{capitals}</Col>
+          </Row>
+
+          <hr />
+        </Card.Body>
+
+        <Card.Body>
+          <Row>
+            <Col>Area</Col>
+            <Col>{country.area} km</Col>
+          </Row>
+          <hr />
+        </Card.Body>
+
+        <Card.Body>
+          <Row>
+            <Col>Borders</Col>
+            <Col>
+              <ListGroup>{borders}</ListGroup>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
